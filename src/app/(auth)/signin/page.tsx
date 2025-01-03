@@ -22,7 +22,6 @@ import { signInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
 
 function page() {
-  const [username, setUsername] = useState<string | null>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { toast } = useToast();

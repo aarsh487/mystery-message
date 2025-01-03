@@ -8,13 +8,11 @@ import { useToast } from '@/hooks/use-toast';
 import { AcceptMessageSchema } from '@/schemas/acceptMessageSchema';
 import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Message } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
 import { Loader2, RefreshCcw } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 
 export interface MessageTypes {
   id: string;

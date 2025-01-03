@@ -1,11 +1,9 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import { signUpSchema } from "@/schemas/signUpSchema";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDebounceCallback } from "usehooks-ts";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {

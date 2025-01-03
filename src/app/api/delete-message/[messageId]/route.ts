@@ -5,12 +5,12 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: Record<string, string> }
+  { params }: { params:{ messageId: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
     const user = session?.user;
-    const messageId = context.params.messageId;
+    const messageId = params.messageId;
 
     if (!session || !user) {
       return NextResponse.json(

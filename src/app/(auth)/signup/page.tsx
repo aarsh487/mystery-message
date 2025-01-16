@@ -75,7 +75,7 @@ function page() {
         description: response.data.message,
       });
 
-      router.replace(`/verify/${username}`);
+      router.replace(`/signin`);
 
       setIsSubmitting(false);
     } catch (error) {

@@ -8,7 +8,6 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { CardHeader, CardContent, Card } from '@/components/ui/card';
-import { useCompletion } from 'ai/react';
 import {
   Form,
   FormControl,
@@ -27,8 +26,9 @@ import { useToast } from '@/hooks/use-toast';
 
 const specialChar = '||';
 
-const parseStringMessages = (messageString: string): string[] => {
-  return messageString.split(specialChar);
+const parseStringMessages = (messageString: string, initialMessageString: string): string[] => {
+  const value = messageString || initialMessageString;
+  return value.split(specialChar);
 };
 
 const initialMessageString =
@@ -39,16 +39,6 @@ export default function SendMessage() {
   const username = params.username;
 
   const { toast } = useToast();
-
-  const {
-    complete,
-    completion,
-    isLoading: isSuggestLoading,
-    error,
-  } = useCompletion({
-    api: '/api/suggest-messages',
-    initialCompletion: initialMessageString,
-  });
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -61,6 +51,8 @@ export default function SendMessage() {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const [ messages, setMessages ] = useState();
+  const [ error, setError ] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsLoading(true);
@@ -90,7 +82,11 @@ export default function SendMessage() {
 
   const fetchSuggestedMessages = async () => {
     try {
-      complete('');
+      const response = await axios.post('/api/suggest-messages');
+      if(!response){
+        setError(true)
+      }
+      setMessages(response.data.result);
     } catch (error) {
       console.error('Error fetching messages:', error);
       // Handle error appropriately
@@ -141,7 +137,6 @@ export default function SendMessage() {
           <Button
             onClick={fetchSuggestedMessages}
             className="my-4"
-            disabled={isSuggestLoading}
           >
             Suggest Messages
           </Button>
@@ -153,9 +148,9 @@ export default function SendMessage() {
           </CardHeader>
           <CardContent className="flex flex-col space-y-4">
             {error ? (
-              <p className="text-red-500">{error.message}</p>
+              <p className="text-red-500">{error}</p>
             ) : (
-              parseStringMessages(completion).map((message, index) => (
+              parseStringMessages(messages as unknown as string, initialMessageString).map((message, index) => (
                 <Button
                   key={index}
                   variant="outline"

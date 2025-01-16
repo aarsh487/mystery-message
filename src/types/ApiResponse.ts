@@ -1,4 +1,3 @@
-import { boolean } from "zod";
 
 export interface ApiResponse {
     success: boolean;
@@ -10,4 +9,5 @@ export interface ApiResponse {
         createdAt: Date;
         userId?: string
     }>;
+    text?: string;
 }

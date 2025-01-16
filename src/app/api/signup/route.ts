@@ -1,7 +1,6 @@
 import prisma from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
-// import { sendverificationEmail } from "@/constants/sendVerificationEmail";
 
 export async function POST(req: NextRequest) {
     try {
@@ -53,16 +52,6 @@ export async function POST(req: NextRequest) {
                 }
             })   
         }
-
-        // const emailResponse = await sendverificationEmail(email, username, verifyCode);
-        // if(!emailResponse.success){
-        //     return  NextResponse.json({
-        //         success: false,
-        //         message: emailResponse.message
-        //     },
-        //     { status: 500 }
-        //     );
-        // }
 
         return  NextResponse.json({
             success: true,
